@@ -6,13 +6,15 @@ from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
-# Try Streamlit secrets first, fall back to .env
 try:
     VT_API_KEY = st.secrets["VIRUSTOTAL_API_KEY"]
     ABUSEIPDB_API_KEY = st.secrets["ABUSEIPDB_API_KEY"]
-except:
+    st.sidebar.success("Keys loaded from Streamlit secrets")
+except Exception as e:
     VT_API_KEY = os.getenv("VIRUSTOTAL_API_KEY")
     ABUSEIPDB_API_KEY = os.getenv("ABUSEIPDB_API_KEY")
+    st.sidebar.error(f"Secrets error: {e}")
+
 st.set_page_config(
     page_title="ThreatScope | Cyber Intelligence",
     page_icon="🛡️",
