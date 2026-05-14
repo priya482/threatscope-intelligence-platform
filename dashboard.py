@@ -77,6 +77,12 @@ with col_in:
 with col_btn:
     analyze = st.button("ANALYZE", type="primary")
 
+# Allow Enter key to trigger analysis
+if ip_input and not analyze:
+    analyze = (ip_input != st.session_state.get("last_ip", ""))
+    if analyze:
+        st.session_state["last_ip"] = ip_input
+
 st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
 if analyze and ip_input:
