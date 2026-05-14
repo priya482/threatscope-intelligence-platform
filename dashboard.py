@@ -82,13 +82,13 @@ st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 if analyze and ip_input:
     with st.spinner(f"Interrogating threat databases for {ip_input}..."):
         vt_res = requests.get(
-            f"https://www.virustotal.com/api/v3/ip_addresses/{ip_input}",
-            headers={"x-apikey": VT_API_KEY}
+            f"https://www.virustotal.com/api/v3/ip_addresses/{ip_input.strip()}",
+            headers={"x-apikey": VT_API_KEY.strip()}
         )
         ab_res = requests.get(
             "https://api.abuseipdb.com/api/v2/check",
-            headers={"Key": ABUSEIPDB_API_KEY, "Accept": "application/json"},
-            params={"ipAddress": ip_input, "maxAgeInDays": 90}
+            headers={"Key": ABUSEIPDB_API_KEY.strip(), "Accept": "application/json"},
+            params={"ipAddress": ip_input.strip(), "maxAgeInDays": 90}
         )
 
         if vt_res.status_code == 200 and ab_res.status_code == 200:
