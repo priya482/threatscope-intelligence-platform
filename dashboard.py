@@ -4,11 +4,15 @@ import os
 import plotly.graph_objects as go
 from datetime import datetime
 from dotenv import load_dotenv
-
 load_dotenv()
-VT_API_KEY = os.getenv("VIRUSTOTAL_API_KEY")
-ABUSEIPDB_API_KEY = os.getenv("ABUSEIPDB_API_KEY")
 
+# Try Streamlit secrets first, fall back to .env
+try:
+    VT_API_KEY = st.secrets["VIRUSTOTAL_API_KEY"]
+    ABUSEIPDB_API_KEY = st.secrets["ABUSEIPDB_API_KEY"]
+except:
+    VT_API_KEY = os.getenv("VIRUSTOTAL_API_KEY")
+    ABUSEIPDB_API_KEY = os.getenv("ABUSEIPDB_API_KEY")
 st.set_page_config(
     page_title="ThreatScope | Cyber Intelligence",
     page_icon="🛡️",
