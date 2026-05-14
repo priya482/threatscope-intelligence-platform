@@ -237,7 +237,10 @@ if analyze and ip_input:
             params={"ipAddress": ip_input, "maxAgeInDays": 90}
         )
 
-        if vt_res.status_code == 200 and ab_res.status_code == 200:
+        st.write(f"VT Status: {vt_res.status_code}")
+st.write(f"AB Status: {ab_res.status_code}")
+
+if vt_res.status_code == 200 and ab_res.status_code == 200:
             vt = vt_res.json()["data"]["attributes"]
             ab = ab_res.json()["data"]
 
