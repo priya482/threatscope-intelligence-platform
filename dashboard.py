@@ -4,6 +4,7 @@ import os
 import plotly.graph_objects as go
 from datetime import datetime
 from dotenv import load_dotenv
+
 load_dotenv()
 
 try:
@@ -25,189 +26,44 @@ st.set_page_config(
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;400;600;700&display=swap');
-
 * { font-family: 'Rajdhani', sans-serif; }
-code, .mono { font-family: 'Space Mono', monospace; }
-
 .stApp { background: #080c14; }
-
 .hero {
     background: linear-gradient(135deg, #080c14 0%, #0d1821 50%, #080c14 100%);
     border: 1px solid #1a2744;
     border-radius: 16px;
     padding: 40px;
     margin-bottom: 30px;
-    position: relative;
-    overflow: hidden;
 }
-.hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at center, rgba(0,212,255,0.03) 0%, transparent 60%);
-    pointer-events: none;
-}
-.hero-title {
-    font-size: 3em;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 4px;
-    margin: 0;
-    text-transform: uppercase;
-}
+.hero-title { font-size: 3em; font-weight: 700; color: #ffffff; letter-spacing: 4px; margin: 0; text-transform: uppercase; }
 .hero-title span { color: #00d4ff; }
-.hero-sub {
-    color: #4a6fa5;
-    font-size: 1em;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 8px;
-    font-family: 'Space Mono', monospace;
-}
-
-.risk-banner {
-    padding: 24px 30px;
-    border-radius: 12px;
-    margin: 20px 0;
-    border: 1px solid;
-}
+.hero-sub { color: #4a6fa5; font-size: 1em; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; font-family: 'Space Mono', monospace; }
+.risk-banner { padding: 24px 30px; border-radius: 12px; margin: 20px 0; border: 1px solid; }
 .risk-critical { background: rgba(255,30,30,0.08); border-color: #ff1e1e; }
 .risk-high { background: rgba(255,140,0,0.08); border-color: #ff8c00; }
 .risk-low { background: rgba(0,212,100,0.08); border-color: #00d464; }
-
-.risk-label {
-    font-size: 1.8em;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-}
+.risk-label { font-size: 1.8em; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-family: 'Space Mono', monospace; }
 .risk-critical .risk-label { color: #ff1e1e; }
 .risk-high .risk-label { color: #ff8c00; }
 .risk-low .risk-label { color: #00d464; }
-
-.risk-action {
-    color: #8899aa;
-    font-size: 0.95em;
-    margin-top: 6px;
-    letter-spacing: 1px;
-}
-
-.data-card {
-    background: #0d1821;
-    border: 1px solid #1a2744;
-    border-radius: 12px;
-    padding: 24px;
-    height: 100%;
-}
-.data-card-title {
-    color: #4a6fa5;
-    font-size: 0.75em;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 8px;
-}
-.data-card-value {
-    color: #ffffff;
-    font-size: 1.8em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.mitre-card {
-    background: #0d1821;
-    border: 1px solid #1a2744;
-    border-left: 4px solid #00d4ff;
-    border-radius: 0 12px 12px 0;
-    padding: 18px 24px;
-    margin-bottom: 12px;
-}
-.mitre-id {
-    color: #00d4ff;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85em;
-    font-weight: 700;
-}
+.risk-action { color: #8899aa; font-size: 0.95em; margin-top: 6px; letter-spacing: 1px; }
+.data-card { background: #0d1821; border: 1px solid #1a2744; border-radius: 12px; padding: 24px; height: 100%; }
+.data-card-title { color: #4a6fa5; font-size: 0.75em; letter-spacing: 3px; text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 8px; }
+.data-card-value { color: #ffffff; font-size: 1.8em; font-weight: 700; letter-spacing: 1px; }
+.mitre-card { background: #0d1821; border: 1px solid #1a2744; border-left: 4px solid #00d4ff; border-radius: 0 12px 12px 0; padding: 18px 24px; margin-bottom: 12px; }
+.mitre-id { color: #00d4ff; font-family: 'Space Mono', monospace; font-size: 0.85em; font-weight: 700; }
 .mitre-name { color: #ffffff; font-size: 1.1em; font-weight: 600; }
-.mitre-tactic {
-    color: #4a6fa5;
-    font-size: 0.8em;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
+.mitre-tactic { color: #4a6fa5; font-size: 0.8em; letter-spacing: 2px; text-transform: uppercase; }
 .mitre-desc { color: #667788; font-size: 0.9em; margin-top: 4px; }
-
-.stTextInput > div > div > input {
-    background: #0d1821 !important;
-    border: 1px solid #1a2744 !important;
-    border-radius: 8px !important;
-    color: #ffffff !important;
-    font-family: 'Space Mono', monospace !important;
-    font-size: 1em !important;
-    padding: 14px 18px !important;
-}
-.stTextInput > div > div > input:focus {
-    border-color: #00d4ff !important;
-    box-shadow: 0 0 0 2px rgba(0,212,255,0.15) !important;
-}
-.stButton > button {
-    background: linear-gradient(135deg, #00d4ff, #0088cc) !important;
-    color: #000000 !important;
-    font-family: 'Rajdhani', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 1em !important;
-    letter-spacing: 2px !important;
-    text-transform: uppercase !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 14px 28px !important;
-    width: 100% !important;
-}
-.stButton > button:hover {
-    background: linear-gradient(135deg, #33ddff, #00aaee) !important;
-    transform: translateY(-1px);
-}
-
-.section-header {
-    color: #4a6fa5;
-    font-size: 0.75em;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    border-bottom: 1px solid #1a2744;
-    padding-bottom: 12px;
-    margin: 30px 0 20px 0;
-}
-
-.stDownloadButton > button {
-    background: transparent !important;
-    border: 1px solid #1a2744 !important;
-    color: #4a6fa5 !important;
-    font-family: 'Space Mono', monospace !important;
-    font-size: 0.8em !important;
-    letter-spacing: 2px !important;
-    border-radius: 8px !important;
-}
-.stDownloadButton > button:hover {
-    border-color: #00d4ff !important;
-    color: #00d4ff !important;
-}
-
-.stSpinner > div { border-top-color: #00d4ff !important; }
-div[data-testid="metric-container"] {
-    background: #0d1821;
-    border: 1px solid #1a2744;
-    border-radius: 10px;
-    padding: 16px;
-}
+.stTextInput > div > div > input { background: #0d1821 !important; border: 1px solid #1a2744 !important; border-radius: 8px !important; color: #ffffff !important; font-family: 'Space Mono', monospace !important; font-size: 1em !important; padding: 14px 18px !important; }
+.stTextInput > div > div > input:focus { border-color: #00d4ff !important; box-shadow: 0 0 0 2px rgba(0,212,255,0.15) !important; }
+.stButton > button { background: linear-gradient(135deg, #00d4ff, #0088cc) !important; color: #000000 !important; font-family: 'Rajdhani', sans-serif !important; font-weight: 700 !important; font-size: 1em !important; letter-spacing: 2px !important; text-transform: uppercase !important; border: none !important; border-radius: 8px !important; padding: 14px 28px !important; width: 100% !important; }
+.section-header { color: #4a6fa5; font-size: 0.75em; letter-spacing: 3px; text-transform: uppercase; font-family: 'Space Mono', monospace; border-bottom: 1px solid #1a2744; padding-bottom: 12px; margin: 30px 0 20px 0; }
+.stDownloadButton > button { background: transparent !important; border: 1px solid #1a2744 !important; color: #4a6fa5 !important; font-family: 'Space Mono', monospace !important; font-size: 0.8em !important; letter-spacing: 2px !important; border-radius: 8px !important; }
+.stDownloadButton > button:hover { border-color: #00d4ff !important; color: #00d4ff !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# Hero Header
 st.markdown("""
 <div class="hero">
     <div class="hero-title">THREAT<span>SCOPE</span></div>
@@ -215,7 +71,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Search bar
 col_in, col_btn = st.columns([5, 1])
 with col_in:
     ip_input = st.text_input("IP Address", placeholder="Enter target IP address...", label_visibility="collapsed")
@@ -226,7 +81,6 @@ st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
 if analyze and ip_input:
     with st.spinner(f"Interrogating threat databases for {ip_input}..."):
-
         vt_res = requests.get(
             f"https://www.virustotal.com/api/v3/ip_addresses/{ip_input}",
             headers={"x-apikey": VT_API_KEY}
@@ -237,10 +91,7 @@ if analyze and ip_input:
             params={"ipAddress": ip_input, "maxAgeInDays": 90}
         )
 
-        st.write(f"VT Status: {vt_res.status_code}")
-st.write(f"AB Status: {ab_res.status_code}")
-
-if vt_res.status_code == 200 and ab_res.status_code == 200:
+        if vt_res.status_code == 200 and ab_res.status_code == 200:
             vt = vt_res.json()["data"]["attributes"]
             ab = ab_res.json()["data"]
 
@@ -257,15 +108,19 @@ if vt_res.status_code == 200 and ab_res.status_code == 200:
             usage_type = ab["usageType"]
             last_reported = ab.get("lastReportedAt", "Never")[:10] if ab.get("lastReportedAt") else "Never"
 
-            # Risk
             if malicious > 5 or abuse_score >= 80:
-                risk = "CRITICAL"; risk_class = "risk-critical"; action = "BLOCK IMMEDIATELY — Escalate to senior analyst"
+                risk = "CRITICAL"
+                risk_class = "risk-critical"
+                action = "BLOCK IMMEDIATELY — Escalate to senior analyst"
             elif malicious > 0 or abuse_score >= 40:
-                risk = "HIGH"; risk_class = "risk-high"; action = "INVESTIGATE — Monitor all traffic from this source"
+                risk = "HIGH"
+                risk_class = "risk-high"
+                action = "INVESTIGATE — Monitor all traffic from this source"
             else:
-                risk = "LOW"; risk_class = "risk-low"; action = "MONITOR — Add to threat watchlist"
+                risk = "LOW"
+                risk_class = "risk-low"
+                action = "MONITOR — Add to threat watchlist"
 
-            # Risk banner
             st.markdown(f"""
             <div class="risk-banner {risk_class}">
                 <div class="risk-label">{risk} THREAT — {ip_input}</div>
@@ -273,7 +128,6 @@ if vt_res.status_code == 200 and ab_res.status_code == 200:
             </div>
             """, unsafe_allow_html=True)
 
-            # Data cards
             c1, c2, c3, c4, c5, c6 = st.columns(6)
             with c1:
                 st.markdown(f'<div class="data-card"><div class="data-card-title">Country</div><div class="data-card-value">{country}</div></div>', unsafe_allow_html=True)
@@ -290,14 +144,13 @@ if vt_res.status_code == 200 and ab_res.status_code == 200:
 
             st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
-            # Charts
             col_l, col_r = st.columns(2)
 
             with col_l:
                 st.markdown('<div class="section-header">VIRUSTOTAL — VENDOR ANALYSIS</div>', unsafe_allow_html=True)
                 fig1 = go.Figure(data=[go.Pie(
                     labels=["Malicious", "Suspicious", "Harmless"],
-                    values=[max(malicious,0.1), max(suspicious,0.1), max(harmless,0.1)],
+                    values=[max(malicious, 0.1), max(suspicious, 0.1), max(harmless, 0.1)],
                     hole=0.6,
                     marker_colors=["#ff1e1e", "#ff8c00", "#00d464"],
                     textfont=dict(family="Space Mono", color="white"),
@@ -345,7 +198,6 @@ if vt_res.status_code == 200 and ab_res.status_code == 200:
                 )
                 st.plotly_chart(fig2, use_container_width=True)
 
-            # ISP info
             st.markdown(f"""
             <div style="background:#0d1821; border:1px solid #1a2744; border-radius:10px; padding:16px 24px; margin-bottom:20px;">
             <span style="color:#4a6fa5; font-family:'Space Mono',monospace; font-size:0.75em; letter-spacing:2px;">ISP</span>
@@ -353,7 +205,6 @@ if vt_res.status_code == 200 and ab_res.status_code == 200:
             </div>
             """, unsafe_allow_html=True)
 
-            # MITRE
             st.markdown('<div class="section-header">MITRE ATT&CK MAPPING</div>', unsafe_allow_html=True)
 
             techniques = []
@@ -385,7 +236,6 @@ if vt_res.status_code == 200 and ab_res.status_code == 200:
                 </div>
                 """, unsafe_allow_html=True)
 
-            # Download
             st.markdown('<div class="section-header">EXPORT REPORT</div>', unsafe_allow_html=True)
             report = f"""THREATSCOPE — THREAT INTELLIGENCE REPORT
 {'='*55}
@@ -427,12 +277,12 @@ MITRE ATT&CK TECHNIQUES
             st.download_button(
                 label="⬇  EXPORT FULL REPORT (.TXT)",
                 data=report,
-                file_name=f"threatscope_{ip_input.replace('.','_')}_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
+                file_name=f"threatscope_{ip_input.replace('.', '_')}_{datetime.now().strftime('%Y%m%d_%H%M')}.txt",
                 mime="text/plain"
             )
 
         else:
-            st.error("API connection failed — verify keys in .env file")
+            st.error(f"API Error — VT: {vt_res.status_code} | AbuseIPDB: {ab_res.status_code}")
 
 elif analyze and not ip_input:
     st.warning("Enter a target IP address to begin analysis.")
