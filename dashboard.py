@@ -207,14 +207,14 @@ if analyze and ip_input:
             st.markdown(f"""
             <div style="background:#0d1821; border:1px solid #1a2744; border-radius:10px; padding:16px 24px; margin-bottom:20px;">
             <span style="color:#4a6fa5; font-family:'Space Mono',monospace; font-size:0.75em; letter-spacing:2px;">ISP</span>
-            <span style="color:#ffffff; font-size:1.1em; font-weight:600; margin-left:20px;">{isp}</span>
+            <span style="color:#ffffff; font-size:1.1em; font-weight:600; margin-left:20px;">{isp if isp else "Private/Reserved IP"}</span>
             </div>
             """, unsafe_allow_html=True)
 
             st.markdown('<div class="section-header">MITRE ATT&CK MAPPING</div>', unsafe_allow_html=True)
 
             techniques = []
-            if "tor" in isp.lower():
+            if isp and "tor" in isp.lower():
                 techniques.append(("T1090.003", "Proxy: Multi-hop Proxy", "Defense Evasion", "Attacker used Tor network to anonymize origin"))
             if abuse_score >= 80:
                 techniques.append(("T1110.001", "Brute Force: Password Guessing", "Credential Access", "IP strongly associated with credential-based attacks"))
